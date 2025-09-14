@@ -12,7 +12,12 @@ function Navbar() {
         <span className="brand">Convrilo</span>
       </Link>
       <div className="links">
-        <Link to="#" className="link">Updates</Link>
+        <Link
+          to="/updates"
+          className={`link ${location.pathname === '/updates' ? 'active' : ''}`}
+        >
+          Updates
+        </Link>
         <Link
           to="/pricing"
           className={`link ${location.pathname === '/pricing' ? 'active' : ''}`}

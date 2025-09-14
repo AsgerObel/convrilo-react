@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import FileConverter from './components/FileConverter';
 import Pricing from './pages/Pricing';
+import Updates from './pages/Updates';
 import './App.css';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<FileConverter />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/updates" element={<Updates />} />
         </Routes>
       </div>
     </Router>

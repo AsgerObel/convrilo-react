@@ -201,7 +201,15 @@ function FileConverter() {
   };
 
   return (
-    <main className="main-container">
+    <main className="main-container" style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      width: '100%',
+      minHeight: '100vh',
+      padding: '8rem 1rem 2rem'
+    }}>
       {fileQueue.length === 0 && !isConverting ? (
         <>
           <div
@@ -210,6 +218,11 @@ function FileConverter() {
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
+            style={{
+              width: '100%',
+              maxWidth: '700px',
+              margin: '0 auto 2rem auto'
+            }}
           >
             <div className="upload-content">
               <div className="upload-icon">
@@ -233,7 +246,14 @@ function FileConverter() {
             </div>
           </div>
 
-          <div className="tool-categories">
+          <div className="tool-categories" style={{
+            width: '100%',
+            maxWidth: '700px',
+            display: 'flex',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            gap: '1rem'
+          }}>
             <button className="tool-btn" onClick={() => fileInputRef.current?.click()}>
               <span className="tool-icon">🖼️</span>
               Images
