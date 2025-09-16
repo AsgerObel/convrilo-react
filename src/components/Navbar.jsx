@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { User, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import AuthModal from './AuthModal';
 import './Navbar.css';
 
 function Navbar() {
   const location = useLocation();
   const { user, signOut } = useAuth();
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const handleSignOut = async () => {
@@ -56,18 +54,13 @@ function Navbar() {
           )}
         </div>
       ) : (
-        <button
+        <Link
+          to="/auth"
           className="signup"
-          onClick={() => setShowAuthModal(true)}
         >
           Sign up →
-        </button>
+        </Link>
       )}
-
-      <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-      />
     </nav>
   );
 }

@@ -5,13 +5,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(4px);
+  z-index: 10000;
   padding: 1rem;
+  pointer-events: auto;
 }
 
 .simple-auth-modal {
@@ -19,14 +19,16 @@
   width: 100%;
   max-width: 400px;
   background: #2d2d2d;
-  border-radius: 20px;
-  padding: 40px 30px;
+  border-radius: 18px;
+  padding: 30px 35px;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   margin: auto;
   transform: translateY(0);
+  z-index: 10001;
+  filter: none !important;
 }
 
 .simple-auth-close {
@@ -55,8 +57,8 @@
 }
 
 .simple-logo-circle {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   background: #4a4a4a;
   border-radius: 50%;
   display: flex;
@@ -65,23 +67,23 @@
 }
 
 .simple-logo-c {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   background: #4A90E2;
-  border-radius: 8px;
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .simple-auth-title {
   color: white;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 500;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
   text-align: center;
 }
 
@@ -96,10 +98,10 @@
   width: 100%;
   background: #4a4a4a;
   border: none;
-  border-radius: 16px;
-  padding: 16px 20px;
+  border-radius: 14px;
+  padding: 12px 16px;
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   outline: none;
   transition: all 0.2s ease;
   box-sizing: border-box;
@@ -116,16 +118,16 @@
 .simple-auth-btn {
   width: 100%;
   border: none;
-  border-radius: 16px;
-  padding: 16px 20px;
-  font-size: 16px;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   box-sizing: border-box;
 }
 

@@ -67,97 +67,110 @@ function AuthModal({ isOpen, onClose, mode = 'signin' }) {
   };
 
   return (
-    <div className="simple-auth-overlay" onClick={onClose}>
-      <div className="simple-auth-modal" onClick={(e) => e.stopPropagation()}>
-        <button className="simple-auth-close" onClick={onClose}>
-          <X size={20} />
-        </button>
+    <>
+      {/* Prevent background interactions and apply blur */}
+      <style>{`
+        body { overflow: hidden; }
+        .main-container { pointer-events: none; filter: blur(2px); }
+        .navbar { pointer-events: none; filter: blur(2px); }
+        .simple-auth-overlay, .simple-auth-overlay *, .simple-auth-modal, .simple-auth-modal * {
+          filter: none !important;
+          backdrop-filter: none !important;
+        }
+      `}</style>
 
-        {/* Logo */}
-        <div className="simple-auth-logo">
-          <div className="simple-logo-circle">
-            <div className="simple-logo-c">C</div>
+      <div className="simple-auth-overlay" onClick={onClose} style={{ filter: 'none !important' }}>
+        <div className="simple-auth-modal" onClick={(e) => e.stopPropagation()} style={{ filter: 'none !important' }}>
+          <button className="simple-auth-close" onClick={onClose}>
+            <X size={20} />
+          </button>
+
+          {/* Logo */}
+          <div className="simple-auth-logo">
+            <div className="simple-logo-circle">
+              <div className="simple-logo-c">C</div>
+            </div>
           </div>
-        </div>
 
-        {/* Title */}
-        <h2 className="simple-auth-title">Convrilo</h2>
+          {/* Title */}
+          <h2 className="simple-auth-title">Convrilo</h2>
 
-        {message && (
-          <div className="simple-auth-message">{message}</div>
-        )}
+          {message && (
+            <div className="simple-auth-message">{message}</div>
+          )}
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="simple-auth-form">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="simple-auth-input"
-            required
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="simple-auth-input"
-            required
-          />
-
-          {isSignUp && (
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="simple-auth-form">
             <input
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="simple-auth-input"
               required
             />
-          )}
 
-          {error && (
-            <div className="simple-auth-error">{error}</div>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="simple-auth-btn primary"
-          >
-            {loading ? 'Loading...' : (isSignUp ? 'Create Account' : 'Sign in')}
-          </button>
-
-          <button
-            type="button"
-            className="simple-auth-btn google"
-          >
-            <img
-              src="https://www.svgrepo.com/show/475656/google-color.svg"
-              alt="Google"
-              className="google-icon"
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="simple-auth-input"
+              required
             />
-            Continue with Google
-          </button>
-        </form>
 
-        {/* Switch Mode */}
-        <div className="simple-auth-switch">
-          <span className="switch-text">
-            {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
+            {isSignUp && (
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="simple-auth-input"
+                required
+              />
+            )}
+
+            {error && (
+              <div className="simple-auth-error">{error}</div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="simple-auth-btn primary"
+            >
+              {loading ? 'Loading...' : (isSignUp ? 'Create Account' : 'Sign in')}
+            </button>
+
             <button
               type="button"
-              onClick={switchMode}
-              className="switch-link"
+              className="simple-auth-btn google"
             >
-              {isSignUp ? 'Sign in' : 'Sign up, it\'s free!'}
+              <img
+                src="https://www.svgrepo.com/show/475656/google-color.svg"
+                alt="Google"
+                className="google-icon"
+              />
+              Continue with Google
             </button>
-          </span>
+          </form>
+
+          {/* Switch Mode */}
+          <div className="simple-auth-switch">
+            <span className="switch-text">
+              {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
+              <button
+                type="button"
+                onClick={switchMode}
+                className="switch-link"
+              >
+                {isSignUp ? 'Sign in' : 'Sign up, it\'s free!'}
+              </button>
+            </span>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
