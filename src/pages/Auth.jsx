@@ -12,7 +12,7 @@ function Auth() {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, signInWithGoogle } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,6 +55,23 @@ function Auth() {
       }
     } catch (err) {
       setError('An unexpected error occurred');
+    }
+
+    setLoading(false);
+  };
+
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    setError('');
+    setMessage('');
+
+    try {
+      const { error } = await signInWithGoogle();
+      if (error) {
+        setError(error.message);
+      }
+    } catch (err) {
+      setError('An unexpected error occurred with Google sign-in');
     }
 
     setLoading(false);
@@ -147,6 +164,8 @@ function Auth() {
 
           <button
             type="button"
+            onClick={handleGoogleSignIn}
+            disabled={loading}
             className="auth-btn google"
           >
             <img

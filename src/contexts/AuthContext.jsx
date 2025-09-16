@@ -52,6 +52,16 @@ export const AuthProvider = ({ children }) => {
     return { data, error };
   };
 
+  const signInWithGoogle = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/`
+      }
+    });
+    return { data, error };
+  };
+
   const signOut = async () => {
     // Clear remember me when user manually signs out
     localStorage.removeItem('rememberMe');
@@ -63,6 +73,7 @@ export const AuthProvider = ({ children }) => {
     user,
     signUp,
     signIn,
+    signInWithGoogle,
     signOut,
     loading
   };
