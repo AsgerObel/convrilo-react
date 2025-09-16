@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { User, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import './Navbar.css';
 
 function Navbar() {
   const location = useLocation();
-  const { user, signOut } = useAuth();
-  const [showUserMenu, setShowUserMenu] = useState(false);
-
-  const handleSignOut = async () => {
-    await signOut();
-    setShowUserMenu(false);
-  };
+  const { user } = useAuth();
 
   return (
     <nav className="navbar">
@@ -36,23 +29,12 @@ function Navbar() {
       </div>
 
       {user ? (
-        <div className="user-menu">
-          <button
-            className="user-button"
-            onClick={() => setShowUserMenu(!showUserMenu)}
-          >
-            <User size={20} />
-            <span>{user.email}</span>
-          </button>
-          {showUserMenu && (
-            <div className="user-dropdown">
-              <button onClick={handleSignOut} className="user-dropdown-item">
-                <LogOut size={16} />
-                Sign Out
-              </button>
-            </div>
-          )}
-        </div>
+        <Link
+          to="/profile"
+          className="signup"
+        >
+          My Profile
+        </Link>
       ) : (
         <Link
           to="/auth"

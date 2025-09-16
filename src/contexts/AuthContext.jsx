@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
     // Get initial session
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
+      console.log('Initial session:', session?.user?.email || 'No user');
       setUser(session?.user ?? null);
       setLoading(false);
     };

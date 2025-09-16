@@ -6,6 +6,7 @@ import FileConverter from './components/FileConverter';
 import Pricing from './pages/Pricing';
 import Updates from './pages/Updates';
 import Auth from './pages/Auth';
+import Profile from './pages/Profile';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/updates" element={<Updates />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
       </Router>
