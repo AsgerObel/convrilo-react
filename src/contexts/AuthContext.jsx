@@ -23,6 +23,13 @@ export const AuthProvider = ({ children }) => {
       async (event, session) => {
         setUser(session?.user ?? null);
         setLoading(false);
+
+        // Handle remember me functionality
+        if (event === 'SIGNED_IN' && localStorage.getItem('rememberMe') === 'true') {
+          // User will stay signed in across browser sessions
+        } else if (event === 'SIGNED_OUT') {
+          localStorage.removeItem('rememberMe');
+        }
       }
     );
 
@@ -46,6 +53,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signOut = async () => {
+    // Clear remember me when user manually signs out
+    localStorage.removeItem('rememberMe');
     const { error } = await supabase.auth.signOut();
     return { error };
   };

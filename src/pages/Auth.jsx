@@ -3,10 +3,11 @@ import { useAuth } from '../contexts/AuthContext';
 import './Auth.css';
 
 function Auth() {
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
@@ -44,6 +45,10 @@ function Auth() {
         if (error) {
           setError(error.message);
         } else {
+          // Store remember me preference
+          if (rememberMe) {
+            localStorage.setItem('rememberMe', 'true');
+          }
           // Redirect to home page on successful sign in
           window.location.href = '/';
         }
@@ -121,6 +126,17 @@ function Auth() {
             <div className="auth-error">{error}</div>
           )}
 
+          {!isSignUp && (
+            <label className="remember-me">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <span>Remember me</span>
+            </label>
+          )}
+
           <button
             type="submit"
             disabled={loading}
@@ -145,15 +161,15 @@ function Auth() {
         {/* Switch Mode */}
         <div className="auth-switch">
           <span className="switch-text">
-            {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
-            <button
-              type="button"
-              onClick={switchMode}
-              className="switch-link"
-            >
-              {isSignUp ? 'Sign in' : 'Sign up, it\'s free!'}
-            </button>
+            {isSignUp ? 'Already have an account?' : "Don't have an account?"}
           </span>
+          <button
+            type="button"
+            onClick={switchMode}
+            className="switch-link"
+          >
+            {isSignUp ? 'Sign in' : 'Sign up, it\'s free!'}
+          </button>
         </div>
       </div>
     </div>
