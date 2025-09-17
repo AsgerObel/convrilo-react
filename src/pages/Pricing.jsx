@@ -58,6 +58,14 @@ function Pricing() {
       setLoading(true);
 
       try {
+        console.log('Starting checkout with:', {
+          userId: user.id,
+          email: user.email,
+          priceId: billingPeriod === 'monthly'
+            ? import.meta.env.VITE_STRIPE_PRICE_MONTHLY
+            : import.meta.env.VITE_STRIPE_PRICE_YEARLY,
+        });
+
         // Create checkout session
         const response = await fetch('/api/create-checkout-session', {
           method: 'POST',
@@ -73,23 +81,43 @@ function Pricing() {
           }),
         });
 
-        const { sessionId } = await response.json();
+        console.log('Response status:', response.status);
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('API error:', errorData);
+          alert(`Checkout failed: ${errorData.error || 'Unknown error'}`);
+          return;
+        }
+
+        const data = await response.json();
+        console.log('Received data:', data);
+
+        const { sessionId } = data;
+
+        if (!sessionId) {
+          console.error('No session ID received');
+          alert('Failed to create checkout session');
+          return;
+        }
 
         // Redirect to Stripe Checkout
         if (stripePromise) {
           const stripe = await stripePromise;
+          console.log('Redirecting to Stripe checkout...');
           const { error } = await stripe.redirectToCheckout({ sessionId });
 
           if (error) {
             console.error('Stripe redirect error:', error);
-            alert('Something went wrong. Please try again.');
+            alert(`Stripe error: ${error.message}`);
           }
         } else {
+          console.error('Stripe not configured');
           alert('Payment system is not configured yet. Please contact support.');
         }
       } catch (error) {
         console.error('Checkout error:', error);
-        alert('Failed to start checkout. Please try again.');
+        alert(`Failed to start checkout: ${error.message}`);
       } finally {
         setLoading(false);
       }
