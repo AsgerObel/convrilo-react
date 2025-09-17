@@ -58,6 +58,38 @@ function Profile() {
     setIsEditing(false);
   };
 
+  const handleCancelSubscription = async () => {
+    if (!confirm('Are you sure you want to cancel your subscription? You will continue to have access until the end of your billing period.')) {
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/cancel-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Your subscription has been cancelled. You will continue to have access until the end of your billing period.');
+        // Refresh subscription data
+        fetchSubscription();
+      } else {
+        console.error('Cancellation failed:', data);
+        alert(data.error || 'Failed to cancel subscription. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error cancelling subscription:', error);
+      alert('Failed to cancel subscription. Please try again.');
+    }
+  };
+
   const handleSignOut = async () => {
     await signOut();
   };
@@ -108,10 +140,23 @@ function Profile() {
               {subscription?.status === 'active' ? (
                 <div className="subscription-active">
                   <CheckCircle size={20} className="success-icon" />
-                  <div>
+                  <div className="subscription-details">
                     <p><strong>Pro Plan Active</strong></p>
                     <p>Enjoy unlimited conversations and large file uploads!</p>
+                    {subscription?.cancel_at_period_end && (
+                      <p className="cancellation-notice">
+                        Your subscription will end on {new Date(subscription.current_period_end).toLocaleDateString()}
+                      </p>
+                    )}
                   </div>
+                  {!subscription?.cancel_at_period_end && (
+                    <button
+                      onClick={handleCancelSubscription}
+                      className="btn-cancel-subscription"
+                    >
+                      Cancel Subscription
+                    </button>
+                  )}
                 </div>
               ) : (
                 <div className="subscription-inactive">

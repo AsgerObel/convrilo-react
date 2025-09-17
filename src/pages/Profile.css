@@ -104,17 +104,52 @@
 
 .subscription-active {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
 }
 
 .subscription-active .success-icon {
   color: #22c55e;
   flex-shrink: 0;
+  margin-top: 0.125rem;
 }
 
-.subscription-active p {
-  margin: 0;
+.subscription-details {
+  flex: 1;
+}
+
+.subscription-details p {
+  margin: 0 0 0.5rem 0;
+}
+
+.subscription-details p:last-child {
+  margin-bottom: 0;
+}
+
+.cancellation-notice {
+  color: #f59e0b !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+.btn-cancel-subscription {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.btn-cancel-subscription:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
 .subscription-inactive {
