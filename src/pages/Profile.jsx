@@ -1,15 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { User, Mail, Calendar, Shield } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { User, Mail, Calendar, Shield, CheckCircle } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 import './Profile.css';
 
 function Profile() {
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [isEditing, setIsEditing] = useState(false);
+  const [subscription, setSubscription] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [userInfo, setUserInfo] = useState({
     displayName: user?.user_metadata?.full_name || user?.email?.split('@')[0] || '',
     email: user?.email || '',
   });
+
+  useEffect(() => {
+    // Check if user came from successful payment
+    if (searchParams.get('success') === 'true') {
+      setShowSuccess(true);
+      // Remove success param from URL after 5 seconds
+      setTimeout(() => {
+        setShowSuccess(false);
+        navigate('/profile', { replace: true });
+      }, 5000);
+    }
+  }, [searchParams, navigate]);
+
+  useEffect(() => {
+    if (user) {
+      fetchSubscription();
+    }
+  }, [user]);
+
+  const fetchSubscription = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('subscriptions')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching subscription:', error);
+      } else {
+        setSubscription(data);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const handleSave = () => {
     // Here you would typically update the user profile in Supabase
@@ -33,14 +75,61 @@ function Profile() {
   return (
     <div className="profile-page">
       <div className="profile-container">
+        {/* Success Message */}
+        {showSuccess && (
+          <div className="success-banner">
+            <CheckCircle size={24} className="success-icon" />
+            <div>
+              <h3>Payment Successful!</h3>
+              <p>Welcome to Convrilo Pro! Your subscription is now active.</p>
+            </div>
+          </div>
+        )}
+
         <div className="profile-header">
           <div className="profile-avatar">
             <User size={48} />
           </div>
           <h1>My Profile</h1>
+          <div className="subscription-badge">
+            {subscription?.status === 'active' ? (
+              <span className="badge-pro">Pro</span>
+            ) : (
+              <span className="badge-free">Free</span>
+            )}
+          </div>
         </div>
 
         <div className="profile-content">
+          {/* Subscription Status Section */}
+          <div className="profile-section">
+            <h2>Subscription Status</h2>
+            <div className="subscription-info">
+              {subscription?.status === 'active' ? (
+                <div className="subscription-active">
+                  <CheckCircle size={20} className="success-icon" />
+                  <div>
+                    <p><strong>Pro Plan Active</strong></p>
+                    <p>Enjoy unlimited conversations and large file uploads!</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="subscription-inactive">
+                  <div>
+                    <p><strong>Free Plan</strong></p>
+                    <p>Upgrade to Pro for unlimited conversations and large file uploads</p>
+                  </div>
+                  <button
+                    onClick={() => navigate('/pricing')}
+                    className="btn-upgrade"
+                  >
+                    Upgrade to Pro
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="profile-section">
             <h2>Account Information</h2>
             <div className="profile-fields">
